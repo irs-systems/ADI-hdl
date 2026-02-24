@@ -94,7 +94,7 @@ _vmake
 *.qtl
 *.xpe
 *.gen*
-*.xsa
+#*.xsa
 *.pdi
 library/**/bd/bd.tcl
 *.syn.smsg
