@@ -37,8 +37,51 @@
 
 module system_top (
 
+  inout  [14:0] ddr_addr,
+  inout  [ 2:0] ddr_ba,
+  inout         ddr_cas_n,
+  inout         ddr_ck_n,
+  inout         ddr_ck_p,
+  inout         ddr_cke,
+  inout         ddr_cs_n,
+  inout  [ 3:0] ddr_dm,
+  inout  [31:0] ddr_dq,
+  inout  [ 3:0] ddr_dqs_n,
+  inout  [ 3:0] ddr_dqs_p,
+  inout         ddr_odt,
+  inout         ddr_ras_n,
+  inout         ddr_reset_n,
+  inout         ddr_we_n,
+
+  inout         fixed_io_ddr_vrn,
+  inout         fixed_io_ddr_vrp,
+  inout  [53:0] fixed_io_mio,
+  inout         fixed_io_ps_clk,
+  inout         fixed_io_ps_porb,
+  inout         fixed_io_ps_srstb,
 
   inout  [31:0] gpio_bd,
+
+  output        hdmi_out_clk,
+  output        hdmi_vsync,
+  output        hdmi_hsync,
+  output        hdmi_data_e,
+  output [15:0] hdmi_data,
+
+  output        i2s_mclk,
+  output        i2s_bclk,
+  output        i2s_lrclk,
+  output        i2s_sdata_out,
+  input         i2s_sdata_in,
+
+  output        spdif,
+
+  inout         iic_scl,
+  inout         iic_sda,
+  inout  [ 1:0] iic_mux_scl,
+  inout  [ 1:0] iic_mux_sda,
+
+  input         otg_vbusoc,
 
   inout  [15:0] adc_db,
   output        adc_rd_n,
@@ -58,9 +101,15 @@ module system_top (
 
   // internal signals
 
-  wire [31:0] gpio_i;
-  wire [31:0] gpio_o;
-  wire [31:0] gpio_t;
+  wire [63:0] gpio_i;
+  wire [63:0] gpio_o;
+  wire [63:0] gpio_t;
+  wire [ 1:0] iic_mux_scl_i_s;
+  wire [ 1:0] iic_mux_scl_o_s;
+  wire        iic_mux_scl_t_s;
+  wire [ 1:0] iic_mux_sda_i_s;
+  wire [ 1:0] iic_mux_sda_o_s;
+  wire        iic_mux_sda_t_s;
 
   wire        adc_db_t;
   wire [15:0] adc_db_o;
@@ -70,13 +119,13 @@ module system_top (
 
   // instantiations
 
-  assign adc_serpar = gpio_o[7];
-  assign adc_refsel = gpio_o[6];
-  assign adc_reset = gpio_o[5];
-  assign adc_stby = gpio_o[4];
-  assign adc_range = gpio_o[3];
-  assign adc_os = gpio_o[2:0];
-  assign gpio_i[31:0] = gpio_o[31:0];
+  assign adc_serpar = gpio_o[39];
+  assign adc_refsel = gpio_o[38];
+  assign adc_reset = gpio_o[37];
+  assign adc_stby = gpio_o[36];
+  assign adc_range = gpio_o[35];
+  assign adc_os = gpio_o[34:32];
+  assign gpio_i[63:32] = gpio_o[63:32];
 
   generate
     for (i = 0; i < 16; i = i + 1) begin: adc_db_io
@@ -96,6 +145,21 @@ module system_top (
     .dio_o(gpio_i[31:0]),
     .dio_p(gpio_bd));
 
+  ad_iobuf #(
+    .DATA_WIDTH(2)
+  ) i_iobuf_iic_mux_scl (
+    .dio_t({iic_mux_scl_t_s, iic_mux_scl_t_s}),
+    .dio_i(iic_mux_scl_o_s),
+    .dio_o(iic_mux_scl_i_s),
+    .dio_p(iic_mux_scl));
+
+  ad_iobuf #(
+    .DATA_WIDTH(2)
+  ) i_iobuf_iic_mux_sda (
+    .dio_t({iic_mux_sda_t_s, iic_mux_sda_t_s}),
+    .dio_i(iic_mux_sda_o_s),
+    .dio_o(iic_mux_sda_i_s),
+    .dio_p(iic_mux_sda));
 
   system_wrapper i_system_wrapper (
     .ddr_addr (ddr_addr),
