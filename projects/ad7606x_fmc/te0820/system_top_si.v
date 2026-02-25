@@ -63,27 +63,6 @@ module system_top #(
 
   inout  [31:0] gpio_bd,
 
-  output        hdmi_out_clk,
-  output        hdmi_vsync,
-  output        hdmi_hsync,
-  output        hdmi_data_e,
-  output [15:0] hdmi_data,
-
-  output        i2s_mclk,
-  output        i2s_bclk,
-  output        i2s_lrclk,
-  output        i2s_sdata_out,
-  input         i2s_sdata_in,
-
-  output        spdif,
-
-  inout         iic_scl,
-  inout         iic_sda,
-  inout  [1:0]  iic_mux_scl,
-  inout  [1:0]  iic_mux_sda,
-
-  input         otg_vbusoc,
-
   output        ad7606_spi_cs,
   output        ad7606_spi_sclk,
   input  [NUM_OF_SDI-1:0] ad7606_spi_sdi,
@@ -104,12 +83,6 @@ module system_top #(
   wire [63:0] gpio_i;
   wire [63:0] gpio_o;
   wire [63:0] gpio_t;
-  wire [ 1:0] iic_mux_scl_i_s;
-  wire [ 1:0] iic_mux_scl_o_s;
-  wire        iic_mux_scl_t_s;
-  wire [ 1:0] iic_mux_sda_i_s;
-  wire [ 1:0] iic_mux_sda_o_s;
-  wire        iic_mux_sda_t_s;
 
   assign gpio_i[63:40] = gpio_o[63:40];
 
@@ -135,22 +108,6 @@ module system_top #(
     .dio_i(gpio_o[31:0]),
     .dio_o(gpio_i[31:0]),
     .dio_p(gpio_bd));
-
-  ad_iobuf #(
-    .DATA_WIDTH(2)
-  ) i_iobuf_iic_mux_scl (
-    .dio_t({iic_mux_scl_t_s, iic_mux_scl_t_s}),
-    .dio_i(iic_mux_scl_o_s),
-    .dio_o(iic_mux_scl_i_s),
-    .dio_p(iic_mux_scl));
-
-  ad_iobuf #(
-    .DATA_WIDTH(2)
-  ) i_iobuf_iic_mux_sda (
-    .dio_t({iic_mux_sda_t_s, iic_mux_sda_t_s}),
-    .dio_i(iic_mux_sda_o_s),
-    .dio_o(iic_mux_sda_i_s),
-    .dio_p(iic_mux_sda));
 
   system_wrapper i_system_wrapper (
     .ddr_addr (ddr_addr),
