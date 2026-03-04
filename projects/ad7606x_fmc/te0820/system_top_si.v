@@ -50,7 +50,8 @@ module system_top #(
   output        adc_reset,
   output [2:0]  adc_os,
   output        adc_stby,
-  output        adc_range
+  output        adc_range,
+  output        spi_clk_out
 );
 
   // internal signals
@@ -85,6 +86,7 @@ module system_top #(
     .ad7606_spi_cs (ad7606_spi_cs),
     .ad7606_spi_sclk (ad7606_spi_sclk),
     .rx_busy (adc_busy),
-    .rx_cnvst_n (adc_cnvst_n));
+    .rx_cnvst_n (adc_cnvst_n),
+    .spi_clk_out (spi_clk_out));
 
 endmodule

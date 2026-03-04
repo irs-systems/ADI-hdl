@@ -29,3 +29,5 @@ set_property -dict {PACKAGE_PIN AD2 IOSTANDARD LVCMOS18} [get_ports adc_os[2]]; 
 set_property -dict {PACKAGE_PIN AD7 IOSTANDARD LVCMOS18} [get_ports adc_stby];       ## C15 FMC_LPC_LA10_N
 set_property -dict {PACKAGE_PIN AD1 IOSTANDARD LVCMOS18} [get_ports adc_range];      ## D15 FMC_LPC_LA09_N
 set_property -dict {PACKAGE_PIN AB6 IOSTANDARD LVCMOS18} [get_ports adc_cnvst_n];    ## D12 FMC_LPC_LA05_N
+
+set_property -dict {PACKAGE_PIN AD5 IOSTANDARD LVCMOS18} [get_ports spi_clk_out];
