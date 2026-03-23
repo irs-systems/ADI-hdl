@@ -1,20 +1,21 @@
 ####################################################################################
-## Copyright (c) 2018 - 2025 Analog Devices, Inc.
+## Copyright (c) 2026 Analog Devices, Inc.
 ### SPDX short identifier: BSD-1-Clause
 ## Auto-generated, do not modify!
 ####################################################################################
 
-PROJECT_NAME := ada4355_fmc_zed
+PROJECT_NAME := ad9740_fmc_zed
 
-M_DEPS += ../common/ada4355_fmc_bd.tcl
 M_DEPS += ../../scripts/adi_pd.tcl
+M_DEPS += ../common/ad9740_fmc_bd.tcl
 M_DEPS += ../../common/zed/zed_system_constr.xdc
 M_DEPS += ../../common/zed/zed_system_bd.tcl
+M_DEPS += ../../../library/xilinx/common/ad_data_clk.v
+M_DEPS += ../../../library/util_cdc/sync_bits.v
 M_DEPS += ../../../library/common/ad_iobuf.v
-M_DEPS += ../../../library/axi_tdd/scripts/axi_tdd.tcl
+M_DEPS += ../../../library/common/ad_edge_detect.v
 
-LIB_DEPS += axi_ada4355
-LIB_DEPS += axi_tdd
+LIB_DEPS += axi_ad9740
 LIB_DEPS += axi_clkgen
 LIB_DEPS += axi_dmac
 LIB_DEPS += axi_hdmi_tx
